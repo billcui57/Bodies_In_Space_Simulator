@@ -29,12 +29,27 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         space1 = new Space();
+        showLineCheckBox = new javax.swing.JCheckBox();
+        clearBodies = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                formKeyReleased(evt);
+            }
+        });
 
         space1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 space1MouseReleased(evt);
+            }
+        });
+        space1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                space1KeyPressed(evt);
             }
         });
 
@@ -42,12 +57,26 @@ public class MainFrame extends javax.swing.JFrame {
         space1.setLayout(space1Layout);
         space1Layout.setHorizontalGroup(
             space1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 786, Short.MAX_VALUE)
+            .addGap(0, 648, Short.MAX_VALUE)
         );
         space1Layout.setVerticalGroup(
             space1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 463, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
+
+        showLineCheckBox.setText("Display Distance Lines");
+        showLineCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showLineCheckBoxActionPerformed(evt);
+            }
+        });
+
+        clearBodies.setText("Clear All");
+        clearBodies.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearBodiesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -55,8 +84,12 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(space1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(space1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(showLineCheckBox)
+                    .addComponent(clearBodies))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -64,6 +97,12 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(space1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(showLineCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(clearBodies)
+                .addContainerGap(370, Short.MAX_VALUE))
         );
 
         pack();
@@ -72,6 +111,33 @@ public class MainFrame extends javax.swing.JFrame {
     private void space1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_space1MouseReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_space1MouseReleased
+
+    private void space1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_space1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_space1KeyPressed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_formKeyPressed
+
+    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formKeyReleased
+
+    private void showLineCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showLineCheckBoxActionPerformed
+        // TODO add your handling code here:
+        if (showLineCheckBox.isSelected()) {
+            space1.showLines = true;
+        } else {
+            space1.showLines = false;
+        }
+    }//GEN-LAST:event_showLineCheckBoxActionPerformed
+
+    private void clearBodiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBodiesActionPerformed
+        // TODO add your handling code here:
+        space1.bodies.clear();
+    }//GEN-LAST:event_clearBodiesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -109,6 +175,8 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton clearBodies;
+    private javax.swing.JCheckBox showLineCheckBox;
     private Space space1;
     // End of variables declaration//GEN-END:variables
 }

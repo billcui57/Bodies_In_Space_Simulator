@@ -1,8 +1,10 @@
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 /*
@@ -21,35 +23,43 @@ public class Space extends javax.swing.JPanel {
      */
     public Space() {
         initComponents();
-         bodies.add(sun);
+
+        this.setBackground(Color.BLACK);
+        bodies.add(sun);
 
     }
-    Body sun = new Body(400,400,0,0,1000,true,this);
+    Body sun = new Body(400, 400, 0, 0, 100, true, this);
     Graphics g;
     ArrayList<Body> bodies = new ArrayList<Body>();
- 
+    boolean showLines = false;
+
     public void paintComponent(Graphics g) {
         this.g = g;
         super.paintComponent(g);
-        
-        if(pressing){
-            g.drawLine((int)beginx, (int)beginy, this.getMousePosition().x, this.getMousePosition().y);
-            
+        g.setColor(Color.WHITE);
+
+        if (pressing) {
+            g.drawLine((int) beginx, (int) beginy, this.getMousePosition().x, this.getMousePosition().y);
+
         }
-        
+
         for (int i = 0; i < bodies.size(); i++) {
-            
+
             this.bodies.get(i).update();
             this.bodies.get(i).draw();
-            
+
         }
-        
-        for(int i=0;i<bodies.size();i++){
-           
-                g.drawLine((int)this.bodies.get(i).x,(int) this.bodies.get(i).y,(int)sun.x ,(int)sun.y);
-                g.drawString(String.valueOf((int)this.bodies.get(i).distanceFrom(sun)), (int)(sun.x+(this.bodies.get(i).x-sun.x)/2), (int)(sun.y+(this.bodies.get(i).y-sun.y)/2));
+
+        if (showLines) {
+            for (int i = 0; i < bodies.size(); i++) {
+                for (int j = i + 1; j < bodies.size(); j++) {
+                    g.drawLine((int) this.bodies.get(i).x, (int) this.bodies.get(i).y, (int) this.bodies.get(j).x, (int) this.bodies.get(j).y);
+                    g.drawString(String.valueOf((int) this.bodies.get(i).distanceFrom(this.bodies.get(j))), (int) (this.bodies.get(j).x + (this.bodies.get(i).x - this.bodies.get(j).x) / 2), (int) (this.bodies.get(j).y + (this.bodies.get(i).y - this.bodies.get(j).y) / 2));
+                }
+
+            }
         }
-        
+       
 
     }
 
@@ -71,6 +81,11 @@ public class Space extends javax.swing.JPanel {
                 formMouseReleased(evt);
             }
         });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -88,28 +103,50 @@ public class Space extends javax.swing.JPanel {
     double beginy;
     double endx;
     double endy;
+
     boolean pressing;
-    
-    
+
+
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         // TODO add your handling code here:
-        pressing=true;
-        beginx=evt.getX();
-        beginy=evt.getY();
+        pressing = true;
+        beginx = evt.getX();
+        beginy = evt.getY();
     }//GEN-LAST:event_formMousePressed
 
     private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
         // TODO add your handling code here:
-        pressing=false;
-        endx=evt.getX();
-        endy=evt.getY();
-        bodies.add(new Body(evt.getX(),evt.getY(),(beginx-endx)/5,(beginy-endy)/5,5,false,this));
+        pressing = false;
+        endx = evt.getX();
+        endy = evt.getY();
+        double velx = (beginx - endx) / 5;
+        double vely = (beginy - endy) / 5;
+        t1.stop();
+        double mass = Double.parseDouble(JOptionPane.showInputDialog(this, "Specify Mass", 5));
+        double vel = Double.parseDouble(JOptionPane.showInputDialog(this, "Specify Positive Magnitude of Velocity", Math.sqrt(Math.pow(velx, 2) + Math.pow(vely, 2))));
+        t1.start();
+        
+        if (vel != 0) {
+            velx = vel * Math.cos(Math.atan((beginy - endy) / (beginx - endx)));
+            vely = vel * Math.sin(Math.atan((beginy - endy) / (beginx - endx)));
+        } else {
+            velx = 0;
+            vely = 0;
+        }
+
+        this.bodies.add(new Body(beginx, beginy, velx, vely, mass, false, this));
+
     }//GEN-LAST:event_formMouseReleased
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        // TODO add your handling code here:
+        System.out.println("hi");
+    }//GEN-LAST:event_formKeyPressed
 
     Timer t1;
 
     public void timer() {
-        t1 = new Timer(50, new TimerListener());
+        t1 = new Timer(20, new TimerListener());
     }
 
     private class TimerListener implements ActionListener {
