@@ -1,5 +1,6 @@
 
 import java.awt.Color;
+import java.awt.Point;
 
 
 
@@ -36,6 +37,15 @@ boolean fixed;
     public void update() {
         accx = 0;
         accy = 0;
+        
+        for(int i=0;i<world.bodies.size();i++){
+            if((!this.world.bodies.get(i).equals(this))&&(this.distanceFrom(world.bodies.get(i))<this.WIDTH/2+world.bodies.get(i).WIDTH/2)){
+                this.world.bodies.remove(i);
+            }
+        }
+        
+        
+        
         if (!fixed) {
             for (int i = 0; i < world.bodies.size(); i++) {
                 if (!world.bodies.get(i).equals(this)) {
@@ -62,10 +72,11 @@ boolean fixed;
     }
 
     public void draw() {
-    
         world.g.fillOval((int) x - WIDTH / 2, (int) y - HEIGHT / 2, WIDTH, HEIGHT);
-       
-      
+    }
+    
+    public Point getPoint(){
+        return new Point((int)this.x,(int)this.y);
     }
 
 }

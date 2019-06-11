@@ -31,6 +31,7 @@ public class MainFrame extends javax.swing.JFrame {
         space1 = new Space();
         showLineCheckBox = new javax.swing.JCheckBox();
         clearBodies = new javax.swing.JButton();
+        traceLineCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -78,6 +79,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        traceLineCheckBox.setText("Trace Paths");
+        traceLineCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                traceLineCheckBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -88,7 +96,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(showLineCheckBox)
-                    .addComponent(clearBodies))
+                    .addComponent(clearBodies)
+                    .addComponent(traceLineCheckBox))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -100,9 +109,11 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(showLineCheckBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(traceLineCheckBox)
+                .addGap(7, 7, 7)
                 .addComponent(clearBodies)
-                .addContainerGap(370, Short.MAX_VALUE))
+                .addContainerGap(345, Short.MAX_VALUE))
         );
 
         pack();
@@ -138,6 +149,15 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         space1.bodies.clear();
     }//GEN-LAST:event_clearBodiesActionPerformed
+
+    private void traceLineCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_traceLineCheckBoxActionPerformed
+        // TODO add your handling code here:
+        if(traceLineCheckBox.isSelected()){
+            space1.tracePaths=true;
+        }else{
+            space1.tracePaths=false;
+        }
+    }//GEN-LAST:event_traceLineCheckBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -178,5 +198,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton clearBodies;
     private javax.swing.JCheckBox showLineCheckBox;
     private Space space1;
+    private javax.swing.JCheckBox traceLineCheckBox;
     // End of variables declaration//GEN-END:variables
 }

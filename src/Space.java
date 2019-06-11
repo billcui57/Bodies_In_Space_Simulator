@@ -1,6 +1,7 @@
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -31,11 +32,14 @@ public class Space extends javax.swing.JPanel {
     Body sun = new Body(400, 400, 0, 0, 100, true, this);
     Graphics g;
     ArrayList<Body> bodies = new ArrayList<Body>();
+    ArrayList<Point> coords = new ArrayList<Point>();
     boolean showLines = false;
+    boolean tracePaths = false;
 
     public void paintComponent(Graphics g) {
         this.g = g;
         super.paintComponent(g);
+
         g.setColor(Color.WHITE);
 
         if (pressing) {
@@ -50,6 +54,18 @@ public class Space extends javax.swing.JPanel {
 
         }
 
+        if (tracePaths) {
+            for (int i = 0; i < bodies.size(); i++) {
+                coords.add(bodies.get(i).getPoint());
+            }
+
+            for (int i = 0; i < coords.size(); i++) {
+                g.drawOval(coords.get(i).x, coords.get(i).y, 1, 1);
+            }
+        }else{
+            coords.clear();
+        }
+
         if (showLines) {
             for (int i = 0; i < bodies.size(); i++) {
                 for (int j = i + 1; j < bodies.size(); j++) {
@@ -59,7 +75,6 @@ public class Space extends javax.swing.JPanel {
 
             }
         }
-       
 
     }
 
@@ -125,7 +140,7 @@ public class Space extends javax.swing.JPanel {
         double mass = Double.parseDouble(JOptionPane.showInputDialog(this, "Specify Mass", 5));
         double vel = Double.parseDouble(JOptionPane.showInputDialog(this, "Specify Positive Magnitude of Velocity", Math.sqrt(Math.pow(velx, 2) + Math.pow(vely, 2))));
         t1.start();
-        
+
         if (vel != 0) {
             velx = vel * Math.cos(Math.atan((beginy - endy) / (beginx - endx)));
             vely = vel * Math.sin(Math.atan((beginy - endy) / (beginx - endx)));
