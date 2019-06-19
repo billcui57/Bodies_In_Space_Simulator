@@ -1,4 +1,7 @@
+package World;
 
+import Entities.Body;
+import Entities.Entity;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -26,15 +29,21 @@ public class Space extends javax.swing.JPanel {
         initComponents();
 
         this.setBackground(Color.BLACK);
-        bodies.add(sun);
+        entities.add(sun);
 
     }
     Body sun = new Body(400, 400, 0, 0, 100, true, this);
-    Graphics g;
-    ArrayList<Body> bodies = new ArrayList<Body>();
+    ArrayList<Entity> entities = new ArrayList<Entity>();
     ArrayList<Point> coords = new ArrayList<Point>();
     boolean showLines = false;
     boolean tracePaths = false;
+    boolean updateBodies = true;
+
+    public Graphics g;
+
+    public ArrayList<Entity> getEntities() {
+        return entities;
+    }
 
     public void paintComponent(Graphics g) {
         this.g = g;
@@ -47,30 +56,40 @@ public class Space extends javax.swing.JPanel {
 
         }
 
-        for (int i = 0; i < bodies.size(); i++) {
+        
+            try {
+                for (int i = 0; i < entities.size(); i++) {
+                    if(updateBodies){
+                    this.entities.get(i).update();
+                    }
+                    this.entities.get(i).draw();
 
-            this.bodies.get(i).update();
-            this.bodies.get(i).draw();
+                }
+            } catch (IndexOutOfBoundsException e) {
 
-        }
+            }
+        
+
+       
 
         if (tracePaths) {
-            for (int i = 0; i < bodies.size(); i++) {
-                coords.add(bodies.get(i).getPoint());
+            for (int i = 0; i < entities.size(); i++) {
+                coords.add(entities.get(i).getPoint());
             }
 
             for (int i = 0; i < coords.size(); i++) {
                 g.drawOval(coords.get(i).x, coords.get(i).y, 1, 1);
             }
-        }else{
+        } else {
             coords.clear();
         }
 
         if (showLines) {
-            for (int i = 0; i < bodies.size(); i++) {
-                for (int j = i + 1; j < bodies.size(); j++) {
-                    g.drawLine((int) this.bodies.get(i).x, (int) this.bodies.get(i).y, (int) this.bodies.get(j).x, (int) this.bodies.get(j).y);
-                    g.drawString(String.valueOf((int) this.bodies.get(i).distanceFrom(this.bodies.get(j))), (int) (this.bodies.get(j).x + (this.bodies.get(i).x - this.bodies.get(j).x) / 2), (int) (this.bodies.get(j).y + (this.bodies.get(i).y - this.bodies.get(j).y) / 2));
+            for (int i = 0; i < entities.size(); i++) {
+                for (int j = i + 1; j < entities.size(); j++) {
+                    g.drawLine((int) this.entities.get(i).getPoint().x, (int) this.entities.get(i).getPoint().y, (int) this.entities.get(j).getPoint().x, (int) this.entities.get(j).getPoint().y);
+
+                    g.drawString(String.valueOf((int) this.entities.get(i).distanceFrom(this.entities.get(j))), (int) (this.entities.get(j).getPoint().x + (this.entities.get(i).getPoint().x - this.entities.get(j).getPoint().x) / 2), (int) (this.entities.get(j).getPoint().y + (this.entities.get(i).getPoint().y - this.entities.get(j).getPoint().y) / 2));
                 }
 
             }
@@ -124,6 +143,7 @@ public class Space extends javax.swing.JPanel {
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         // TODO add your handling code here:
+        
         pressing = true;
         beginx = evt.getX();
         beginy = evt.getY();
@@ -131,27 +151,44 @@ public class Space extends javax.swing.JPanel {
 
     private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
         // TODO add your handling code here:
+
         pressing = false;
         endx = evt.getX();
         endy = evt.getY();
         double velx = (beginx - endx) / 5;
         double vely = (beginy - endy) / 5;
-        t1.stop();
-        double mass = Double.parseDouble(JOptionPane.showInputDialog(this, "Specify Mass", 5));
-        double vel = Double.parseDouble(JOptionPane.showInputDialog(this, "Specify Positive Magnitude of Velocity", Math.sqrt(Math.pow(velx, 2) + Math.pow(vely, 2))));
-        t1.start();
 
-        if (vel != 0) {
-            velx = vel * Math.cos(Math.atan((beginy - endy) / (beginx - endx)));
-            vely = vel * Math.sin(Math.atan((beginy - endy) / (beginx - endx)));
-        } else {
-            velx = 0;
-            vely = 0;
+        double mass = -1000000;
+        double vel = -1000000;
+        try {
+            mass = Double.parseDouble(JOptionPane.showInputDialog(this, "Specify Mass", 5));
+            vel = Double.parseDouble(JOptionPane.showInputDialog(this, "Specify Positive Magnitude of Velocity", Math.sqrt(Math.pow(velx, 2) + Math.pow(vely, 2))));
+        } catch (NullPointerException e) {
+
         }
+        if ((vel != -1000000) && (mass != -1000000)) {
+            if (vel != 0) {
+                //remove ambiguity for first and third quadrant for arctan
+                if (beginx < endx) {
+                    velx = vel * Math.cos(Math.PI + Math.atan((beginy - endy) / (beginx - endx)));
+                    vely = vel * Math.sin(Math.PI + Math.atan((beginy - endy) / (beginx - endx)));
+                } else {
+                    velx = vel * Math.cos(Math.atan((beginy - endy) / (beginx - endx)));
+                    vely = vel * Math.sin(Math.atan((beginy - endy) / (beginx - endx)));
+                }
 
-        this.bodies.add(new Body(beginx, beginy, velx, vely, mass, false, this));
+            } else {
+                velx = 0;
+                vely = 0;
+            }
+
+            this.entities.add(new Body(beginx, beginy, velx, vely, mass, false, this));
+        }
+       
+
 
     }//GEN-LAST:event_formMouseReleased
+
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         // TODO add your handling code here:

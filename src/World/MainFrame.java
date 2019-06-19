@@ -1,3 +1,8 @@
+package World;
+
+
+import World.Space;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -28,10 +33,11 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        space1 = new Space();
         showLineCheckBox = new javax.swing.JCheckBox();
         clearBodies = new javax.swing.JButton();
         traceLineCheckBox = new javax.swing.JCheckBox();
+        pauseButton = new javax.swing.JButton();
+        space1 = new World.Space();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -42,28 +48,6 @@ public class MainFrame extends javax.swing.JFrame {
                 formKeyReleased(evt);
             }
         });
-
-        space1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                space1MouseReleased(evt);
-            }
-        });
-        space1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                space1KeyPressed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout space1Layout = new javax.swing.GroupLayout(space1);
-        space1.setLayout(space1Layout);
-        space1Layout.setHorizontalGroup(
-            space1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 648, Short.MAX_VALUE)
-        );
-        space1Layout.setVerticalGroup(
-            space1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
 
         showLineCheckBox.setText("Display Distance Lines");
         showLineCheckBox.addActionListener(new java.awt.event.ActionListener() {
@@ -86,6 +70,24 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        pauseButton.setText("Pause");
+        pauseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pauseButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout space1Layout = new javax.swing.GroupLayout(space1);
+        space1.setLayout(space1Layout);
+        space1Layout.setHorizontalGroup(
+            space1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 800, Short.MAX_VALUE)
+        );
+        space1Layout.setVerticalGroup(
+            space1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 800, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -93,27 +95,31 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(space1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(showLineCheckBox)
                     .addComponent(clearBodies)
-                    .addComponent(traceLineCheckBox))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(traceLineCheckBox)
+                    .addComponent(pauseButton))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(space1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(showLineCheckBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(traceLineCheckBox)
-                .addGap(7, 7, 7)
-                .addComponent(clearBodies)
-                .addContainerGap(345, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(showLineCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(traceLineCheckBox)
+                        .addGap(7, 7, 7)
+                        .addComponent(clearBodies)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pauseButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(space1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -147,7 +153,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void clearBodiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBodiesActionPerformed
         // TODO add your handling code here:
-        space1.bodies.clear();
+        space1.entities.clear();
+        space1.coords.clear();
     }//GEN-LAST:event_clearBodiesActionPerformed
 
     private void traceLineCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_traceLineCheckBoxActionPerformed
@@ -158,6 +165,18 @@ public class MainFrame extends javax.swing.JFrame {
             space1.tracePaths=false;
         }
     }//GEN-LAST:event_traceLineCheckBoxActionPerformed
+
+    
+    private void pauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseButtonActionPerformed
+        // TODO add your handling code here:
+        if(pauseButton.getText().equals("Pause")){
+            space1.updateBodies=false;
+            pauseButton.setText("Resume");
+        }else if(pauseButton.getText().equals("Resume")){
+             space1.updateBodies=true;
+            pauseButton.setText("Pause");
+        }
+    }//GEN-LAST:event_pauseButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -196,8 +215,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearBodies;
+    private javax.swing.JButton pauseButton;
     private javax.swing.JCheckBox showLineCheckBox;
-    private Space space1;
+    private World.Space space1;
     private javax.swing.JCheckBox traceLineCheckBox;
     // End of variables declaration//GEN-END:variables
 }
