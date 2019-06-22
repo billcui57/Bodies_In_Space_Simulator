@@ -2,6 +2,7 @@ package World;
 
 import Entities.Body;
 import Entities.Entity;
+import Entities.Spaceship;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -29,10 +30,13 @@ public class Space extends javax.swing.JPanel {
         initComponents();
 
         this.setBackground(Color.BLACK);
-        entities.add(sun);
+//        entities.add(sun);
+        entities.add(player1);
 
     }
     Body sun = new Body(400, 400, 0, 0, 100, true, this);
+    Spaceship player1 = new Spaceship(200, 200, 0, 0, 10, false, this);
+
     ArrayList<Entity> entities = new ArrayList<Entity>();
     ArrayList<Point> coords = new ArrayList<Point>();
     boolean showLines = false;
@@ -56,21 +60,17 @@ public class Space extends javax.swing.JPanel {
 
         }
 
-        
-            try {
-                for (int i = 0; i < entities.size(); i++) {
-                    if(updateBodies){
+        try {
+            for (int i = 0; i < entities.size(); i++) {
+                if (updateBodies) {
                     this.entities.get(i).update();
-                    }
-                    this.entities.get(i).draw();
-
                 }
-            } catch (IndexOutOfBoundsException e) {
+                this.entities.get(i).draw();
 
             }
-        
+        } catch (IndexOutOfBoundsException e) {
 
-       
+        }
 
         if (tracePaths) {
             for (int i = 0; i < entities.size(); i++) {
@@ -119,6 +119,9 @@ public class Space extends javax.swing.JPanel {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
             }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                formKeyReleased(evt);
+            }
         });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -143,7 +146,7 @@ public class Space extends javax.swing.JPanel {
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         // TODO add your handling code here:
-        
+
         pressing = true;
         beginx = evt.getX();
         beginy = evt.getY();
@@ -184,7 +187,6 @@ public class Space extends javax.swing.JPanel {
 
             this.entities.add(new Body(beginx, beginy, velx, vely, mass, false, this));
         }
-       
 
 
     }//GEN-LAST:event_formMouseReleased
@@ -192,8 +194,34 @@ public class Space extends javax.swing.JPanel {
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         // TODO add your handling code here:
-        System.out.println("hi");
+        switch (evt.getKeyChar()) {
+            case 'a':
+                player1.commandedTurnLeft = true;
+                break;
+            case 'd':
+                player1.commandedTurnRight = true;
+                break;
+            case 'w':
+                player1.commandedPropel = true;
+                break;
+        }
+
     }//GEN-LAST:event_formKeyPressed
+
+    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
+        // TODO add your handling code here:
+        switch (evt.getKeyChar()) {
+            case 'a':
+                player1.commandedTurnLeft = false;
+                break;
+            case 'd':
+                player1.commandedTurnRight = false;
+                break;
+            case 'w':
+                player1.commandedPropel = false;
+                break;
+        }
+    }//GEN-LAST:event_formKeyReleased
 
     Timer t1;
 

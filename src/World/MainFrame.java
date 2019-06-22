@@ -22,6 +22,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         space1.timer();
         space1.t1.start();
+        space1.setFocusable(true);
     }
 
     /**
@@ -40,14 +41,6 @@ public class MainFrame extends javax.swing.JFrame {
         space1 = new World.Space();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                formKeyReleased(evt);
-            }
-        });
 
         showLineCheckBox.setText("Display Distance Lines");
         showLineCheckBox.addActionListener(new java.awt.event.ActionListener() {
@@ -129,19 +122,6 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_space1MouseReleased
 
-    private void space1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_space1KeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_space1KeyPressed
-
-    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_formKeyPressed
-
-    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_formKeyReleased
-
     private void showLineCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showLineCheckBoxActionPerformed
         // TODO add your handling code here:
         if (showLineCheckBox.isSelected()) {
@@ -149,12 +129,14 @@ public class MainFrame extends javax.swing.JFrame {
         } else {
             space1.showLines = false;
         }
+        
     }//GEN-LAST:event_showLineCheckBoxActionPerformed
 
     private void clearBodiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBodiesActionPerformed
         // TODO add your handling code here:
         space1.entities.clear();
         space1.coords.clear();
+     
     }//GEN-LAST:event_clearBodiesActionPerformed
 
     private void traceLineCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_traceLineCheckBoxActionPerformed
@@ -164,6 +146,7 @@ public class MainFrame extends javax.swing.JFrame {
         }else{
             space1.tracePaths=false;
         }
+     
     }//GEN-LAST:event_traceLineCheckBoxActionPerformed
 
     
@@ -176,6 +159,7 @@ public class MainFrame extends javax.swing.JFrame {
              space1.updateBodies=true;
             pauseButton.setText("Pause");
         }
+        
     }//GEN-LAST:event_pauseButtonActionPerformed
 
     /**

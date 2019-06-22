@@ -39,10 +39,16 @@ public class Body extends Entity {
     public void update() {
         this.testCollide();
        this.accDueToGravity();
+       
+            velx += accx;
+            vely += accy;
+
+            x += velx;
+            y += vely;
     }
 
     public void draw() {
-        world.g.fillOval((int) x - WIDTH / 2, (int) y - HEIGHT / 2, WIDTH, HEIGHT);
+        world.g.fillOval((int) x- WIDTH / 2, (int) y - HEIGHT / 2, WIDTH, HEIGHT);
         
     }
     
