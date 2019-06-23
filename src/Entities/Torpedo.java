@@ -1,32 +1,36 @@
-package Entities;
-
-import World.Space;
-import Entities.Entity;
-import java.awt.Color;
-import java.awt.Point;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package Entities;
+
+import World.Space;
+
 /**
  *
  * @author billc
  */
-public class Body extends Entity {
+public class Torpedo extends Entity {
 
-    public Body(double x, double y, double velx, double vely, double mass, boolean fixed, Space world) {
+    public Torpedo(double x, double y, double velx, double vely, double mass, boolean fixed, Space world) {
         super(x, y, velx, vely, mass, fixed, world);
-        this.WIDTH = 10;
-        this.HEIGHT = 10;
+        this.WIDTH = 1;
+        this.HEIGHT = 1;
     }
 
+    
+    
     @Override
     public void update() {
         this.testCollide();
         this.accDueToGravity();
 
+        
+        if((this.x>world.getWidth())||(this.x<0)||(this.y>world.getHeight())||(this.y<0)){
+            world.rmEntity(this);
+        }
+        
         velx += accx;
         vely += accy;
 
@@ -36,8 +40,7 @@ public class Body extends Entity {
 
     @Override
     public void draw() {
-        world.g.fillOval((int) x - WIDTH / 2, (int) y - HEIGHT / 2, WIDTH, HEIGHT);
-
+        world.g.drawOval((int) x, (int) y, WIDTH, HEIGHT);
     }
 
 }

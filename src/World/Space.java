@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
@@ -30,12 +31,14 @@ public class Space extends javax.swing.JPanel {
         initComponents();
 
         this.setBackground(Color.BLACK);
-//        entities.add(sun);
+        entities.add(sun);
         entities.add(player1);
+        entities.add(player2);
 
     }
-    Body sun = new Body(400, 400, 0, 0, 100, true, this);
-    Spaceship player1 = new Spaceship(200, 200, 0, 0, 10, false, this);
+    Body sun = new Body(400, 400, 0, 0, 20, true, this);
+    Spaceship player1 = new Spaceship(200, 200, 0, 0, 100, false, this);
+    Spaceship player2 = new Spaceship(600, 600, 0, 0, 100, false, this);
 
     ArrayList<Entity> entities = new ArrayList<Entity>();
     ArrayList<Point> coords = new ArrayList<Point>();
@@ -49,9 +52,23 @@ public class Space extends javax.swing.JPanel {
         return entities;
     }
 
+    public void addEntity(Entity newEntity) {
+        this.entities.add(newEntity);
+    }
+
+    public void rmEntity(Entity entity) {
+        this.entities.remove(entity);
+    }
+
+    public void rmEntity(int index) {
+        this.entities.remove(index);
+    }
+
     public void paintComponent(Graphics g) {
-        this.g = g;
         super.paintComponent(g);
+        this.g = g;
+
+        this.requestFocus();
 
         g.setColor(Color.WHITE);
 
@@ -94,7 +111,7 @@ public class Space extends javax.swing.JPanel {
 
             }
         }
-
+        System.out.println(entities);
     }
 
     /**
@@ -196,13 +213,25 @@ public class Space extends javax.swing.JPanel {
         // TODO add your handling code here:
         switch (evt.getKeyChar()) {
             case 'a':
-                player1.commandedTurnLeft = true;
+                player1.startTurningLeft();
                 break;
             case 'd':
-                player1.commandedTurnRight = true;
+                player1.startTurningRight();
                 break;
             case 'w':
-                player1.commandedPropel = true;
+                player1.startPropel();
+                break;
+            case ' ':
+                player1.startFireTorpedo();
+                break;
+            case 'j':
+                player2.startTurningLeft();
+                break;
+            case 'l':
+                player2.startTurningRight();
+                break;
+            case 'i':
+                player2.startPropel();
                 break;
         }
 
@@ -212,13 +241,25 @@ public class Space extends javax.swing.JPanel {
         // TODO add your handling code here:
         switch (evt.getKeyChar()) {
             case 'a':
-                player1.commandedTurnLeft = false;
+                player1.stopTurningLeft();
                 break;
             case 'd':
-                player1.commandedTurnRight = false;
+                player1.stopTurningRight();
                 break;
             case 'w':
-                player1.commandedPropel = false;
+                player1.stopPropel();
+                break;
+            case ' ':
+                player1.stopFireTorpedo();
+                break;
+            case 'j':
+                player2.stopTurningLeft();
+                break;
+            case 'l':
+                player2.stopTurningRight();
+                break;
+            case 'i':
+                player2.stopPropel();
                 break;
         }
     }//GEN-LAST:event_formKeyReleased

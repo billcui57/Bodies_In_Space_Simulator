@@ -23,6 +23,7 @@ public class MainFrame extends javax.swing.JFrame {
         space1.timer();
         space1.t1.start();
         space1.setFocusable(true);
+        
     }
 
     /**
@@ -129,6 +130,7 @@ public class MainFrame extends javax.swing.JFrame {
         } else {
             space1.showLines = false;
         }
+        
         
     }//GEN-LAST:event_showLineCheckBoxActionPerformed
 

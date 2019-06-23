@@ -28,7 +28,11 @@ public abstract class Entity {
     Space world;
     boolean fixed;
 
-    public Entity(double x, double y, Space world) {
+    public Entity(double x, double y, double velx, double vely, double mass, boolean fixed, Space world) {
+        this.velx=velx;
+        this.vely=vely;
+        this.mass=mass;
+        this.fixed=fixed;
         this.x = x;
         this.y = y;
         this.world = world;
@@ -44,13 +48,13 @@ public abstract class Entity {
         for (int i = 0; i < world.getEntities().size(); i++) {
             if ((!this.world.getEntities().get(i).equals(this)) && (this.distanceFrom(world.getEntities().get(i)) < this.WIDTH / 2 + world.getEntities().get(i).WIDTH / 2)) {
                 if (this.getClass() == this.world.getEntities().get(i).getClass()) {
-                    this.world.getEntities().remove(i);
-                    this.world.getEntities().remove(this);
+                    this.world.rmEntity(i);
+                    this.world.rmEntity(this);
                 } else {
                     if (this instanceof Body) {
-                        this.world.getEntities().remove(i);
+                        this.world.rmEntity(i);
                     } else {
-                        this.world.getEntities().remove(this);
+                      this.world.rmEntity(this);
                     }
                 }
 
